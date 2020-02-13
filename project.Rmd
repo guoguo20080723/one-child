@@ -56,3 +56,32 @@ ggplot(data2, aes(x=GDP_per_capita, y=fertility_rate, color=country))+
 ```
 
 Economic development can be the root cause for fertility decline especially when GDP per capita is low. Actually, the magnitude of the fertility decline in China is much more significant before the strict one-child policy went into effect. Compared to the fertility rate in 1995, the fertility rate in 2017 is even a little bit higher (+0.02). It is very possible that even without the policy, China's fertility rate would still decline substantially after 1978.
+
+```{r viz3}
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+library(viridis)
+library(ggpubr)
+data1<-mutate(data, country2=country)
+data1 %>%
+  ggplot(aes(x=year, y=age_dependency_ratio)) +
+  geom_line(data=data1 %>% dplyr::select(-country),
+            aes(group=country2), color="grey", size=0.5, alpha=0.5)+
+  geom_line(aes(color=country), color="royalblue4", size=1.2 )+
+  geom_vline(xintercept=c(1978, 2013), linetype="dotted")+
+  scale_color_viridis(discrete = TRUE) +
+  scale_y_continuous(limits=c(0.3, 1))+
+  theme(legend.position="none")+
+  theme_pander(base_size = 10, base_family = "sans")+
+  labs(x="",
+       y="Age dependency ratio",
+       title="Age Dependency Ratio (1959-2018)",
+       subtitle=paste("China's age dependency ratio started to increase in 2011, and this trend is hard to inverse."),
+       caption="Data Source: World Bank")+
+  facet_wrap(~country)
+```
+
+No matter what accounts for the fertility decline in China, China will have to face the aging population problem in the future. An important indicator is the age dependency ratio, which is the number of non-working population (aged <15 & >64) compared with the number of working age population (aged 15-64). If the ratio is getting higher, the working age population is shrinking and has more pressure to take care of the dependents, and then it will negatively affect the economic development in the long term. 
+
+Once the ratio starts to increase, it is hard to inverse the trend because as the economy grows, people will live longer and tend to have fewer children. China has gradually lost its demographic dividend before it becomes a developed country. The age dependency ratios of Japan and Germany, representing developed countries that have a severe aging population problem, started to increase when the ratios were closer to 0.4, and this trend continued. Whether China has prepared for the increasingly larger pension burden remains a question.
