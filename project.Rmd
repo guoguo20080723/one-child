@@ -37,3 +37,22 @@ data2 %>%
 ```
 
 China implemented a strict one-child policy between 1978 and 2013, and then published a loosened policy allowing parents to have two kids in total. People argue that the policy is the main reason why China's fertility rate decreased dramatically. However, when we compare China to other Asian countries with similar fertility rates in the 1960s, these countries not restricted by the one-child policy still exhibited rapid declines in fertility rates.
+
+```{r viz2}
+library(tidyverse)
+library(ggplot2)
+library(ggthemes)
+ggplot(data2, aes(x=GDP_per_capita, y=fertility_rate, color=country))+
+  geom_point(size=1.2)+
+  scale_y_continuous(limits=c(0, 5))+
+  scale_color_brewer(palette="Set2")+
+  theme_pander(base_size = 10, base_family = "sans")+
+  theme(legend.title = element_blank())+
+  labs(x="GDP per capita (PPP)",
+       y="Fetility rate, total (births per woman)",
+       title="Relationship between Total Fertility Rate and GDP per capita (PPP) (1990-2017)",
+       subtitle=paste("All these countries in Asia experienced rapid declines in total fertility rate until it reaches about 1.5"),
+       caption="Data Source: World Bank")
+```
+
+Economic development can be the root cause for fertility decline especially when GDP per capita is low. Actually, the magnitude of the fertility decline in China is much more significant before the strict one-child policy went into effect. Compared to the fertility rate in 1995, the fertility rate in 2017 is even a little bit higher (+0.02). It is very possible that even without the policy, China's fertility rate would still decline substantially after 1978.
