@@ -1,128 +1,30 @@
 ---
-title: "China’s One Child Policy"
+title: "China's One Child Policy"
 author: "Yingtong Guo"
+date: "2020/2/12"
 output: html_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(message=FALSE)
-knitr::opts_chunk$set(warning=FALSE)
 ```
 
-```{r viz1}
-library(tidyverse)
-library(ggplot2)
-library(readxl)
-library(ggthemes)
-data <- read_excel("data/data.xlsx")
-high<-c("China","India","Philipines","South Korea","Thailand")
-data2 <- filter(data, country %in% high) %>%
-  mutate(country2=country)
-data2 %>%
-  ggplot(aes(x=year, y=fertility_rate)) +
-  geom_line(aes(color=country), color="royalblue4", size=1, alpha=0.5 )+
-  geom_point(aes(color=country), color="royalblue4", size=1.2 )+
-  geom_vline(xintercept=c(1978, 2013), linetype="dotted")+
-  theme(legend.position="none")+
-  theme_pander(base_size = 9, base_family = "sans")+
-  scale_y_continuous(limits=c(0, 8))+
-  labs(x="",
-       y="Fetility rate, total (births per woman)",
-       title="Total Fertility Rate of China, India, Philipines, South Korea, and Thailand (1959-2017)",
-       subtitle=paste("All these countries in Asia experienced rapid declines in fertility during economic development"),
-       caption="Data Source: World Bank")+
-  facet_wrap(~country)
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
 ```
 
-China implemented a strict one-child policy between 1978 and 2013, and then published a loosened policy allowing parents to have two kids in total. People argue that the policy is the main reason why China’s fertility rate decreased dramatically. However, when we compare China to other Asian countries with similar fertility rates in the 1960s, these countries not restricted by the one-child policy still exhibited rapid declines in fertility rates.
+## Including Plots
 
-```{r viz2}
-library(tidyverse)
-library(ggplot2)
-library(ggthemes)
-ggplot(data2, aes(x=GDP_per_capita, y=fertility_rate, color=country))+
-  geom_point(size=1.2)+
-  scale_y_continuous(limits=c(0, 5))+
-  scale_color_brewer(palette="Set2")+
-  theme_pander(base_size = 10, base_family = "sans")+
-  theme(legend.title = element_blank())+
-  labs(x="GDP per capita (PPP)",
-       y="Fetility rate, total (births per woman)",
-       title="Relationship between Total Fertility Rate and GDP per capita (PPP) (1990-2017)",
-       subtitle=paste("All these countries in Asia experienced rapid declines in total fertility rate until it reaches about 1.5"),
-       caption="Data Source: World Bank")
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
 ```
 
-Economic development can be the root cause for fertility decline especially when GDP per capita is low. Actually, the magnitude of the fertility decline in China is much more significant before the strict one-child policy went into effect. Compared to the fertility rate in 1995, the fertility rate in 2017 is even a little bit higher (+0.02). It is very possible that even without the policy, China’s fertility rate would still decline substantially after 1978.
-
-```{r viz3}
-library(tidyverse)
-library(ggplot2)
-library(ggthemes)
-library(viridis)
-library(ggpubr)
-data1<-mutate(data, country2=country)
-data1 %>%
-  ggplot(aes(x=year, y=age_dependency_ratio)) +
-  geom_line(data=data1 %>% dplyr::select(-country),
-            aes(group=country2), color="grey", size=0.5, alpha=0.5)+
-  geom_line(aes(color=country), color="royalblue4", size=1.2 )+
-  geom_vline(xintercept=c(1978, 2013), linetype="dotted")+
-  scale_color_viridis(discrete = TRUE) +
-  scale_y_continuous(limits=c(0.3, 1))+
-  theme(legend.position="none")+
-  theme_pander(base_size = 10, base_family = "sans")+
-  labs(x="",
-       y="Age dependency ratio",
-       title="Age Dependency Ratio (1959-2018)",
-       subtitle=paste("China's age dependency ratio started to increase in 2011, and this trend is hard to inverse."),
-       caption="Data Source: World Bank")+
-  facet_wrap(~country)
-```
-
-No matter what accounts for the fertility decline in China, China will have to face the aging population problem in the future. An important indicator is the age dependency ratio, which is the number of non-working population (aged <15 & >64) compared with the number of working age population (aged 15-64). If the ratio is getting higher, the working age population is shrinking and has more pressure to take care of the dependents, and then it will negatively affect the economic development in the long term. 
-
-Once the ratio starts to increase, it is hard to inverse the trend because as the economy grows, people will live longer and tend to have fewer children. China has gradually lost its demographic dividend before it becomes a developed country. The age dependency ratios of Japan and Germany, representing developed countries that have a severe aging population problem, started to increase when the ratios were closer to 0.4, and this trend continued. Whether China has prepared for the increasingly larger pension burden remains a question.
-
-```{r viz4}
-library(tidyverse)
-library(ggplot2)
-library(ggthemes)
-library(viridis)
-library(ggpubr)
-c<-data1 %>%
-  ggplot(aes(x=year, y=sex_ratio)) +
-  geom_line(data=data1 %>% dplyr::select(-country),
-            aes(group=country2), color="grey", size=0.5, alpha=0.5)+
-  geom_line(aes(color=country), color="royalblue4", 
-            size=1.2, alpha=0.5)+
-  geom_hline(yintercept=1, linetype="dotted")+
-  scale_color_viridis(discrete = TRUE) +
-  theme(legend.position="none")+
-  theme_pander(base_size = 9, base_family = "sans")+
-  labs(x="",
-       y="",
-       title="Sex Ratio (1959-2018)",
-       subtitle="Sex-selective abortion can result in a more uneven sex ratio")+
-  facet_wrap(~country, ncol=2)
-
-data4 <- filter(data, country=="China") %>%
-  mutate(country2=country)
-d<-data4 %>%
-  ggplot(aes(x=year, y=sex_ratio_at_birth)) +
-  geom_line(color="royalblue4", size=1, alpha=0.5 )+
-  geom_point(color="royalblue4", size=1.2 )+
-  scale_x_continuous(limits=c(1995, 2020))+
-  theme(legend.position="none")+
-  theme_pander(base_size = 9, base_family = "sans")+
-  labs(x="",
-       y="",
-       title="Sex Ratio at birth (1997-2017)",
-       caption="Data Source: World Bank")
-ggarrange(c,d,ncol = 2, nrow = 1, widths=c(1.7,1))
-```
-
-People also argue that the one-child policy could exacerbate sex-selective abortion in China. The sex ratio is the ratio of males to females in the country. Considering the change in China’s sex ratio at birth, it is not clear whether the policy is actually related to the problem since the ratio increased after 2000 and then decreased after 2007. 
-
-However, it is obvious that the sex-selective abortion is a severe problem in China. The sex ratio has been about 1.05 since 1959 and did not change. The sex ratio should be a little bit below 1 because women tend to live longer than men in general. China’s uneven sex ratio results from sex-selective abortion and traditional discrimination towards women. In the rural, less developed area, the problem is more severe and common.
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
